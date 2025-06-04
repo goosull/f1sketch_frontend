@@ -10,10 +10,9 @@ type Point = { x: number; y: number };
 
 interface Props {
   trackId: number;
-  officialPath: Point[]; // 서버에서 받은 원본 트랙 궤적 (정규화 이전)
 }
 
-export default function DrawingCanvas({ trackId, officialPath }: Props) {
+export default function DrawingCanvas({ trackId }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState<Point[]>([]);
@@ -67,7 +66,7 @@ export default function DrawingCanvas({ trackId, officialPath }: Props) {
   };
 
   // 이벤트 좌표 추출 함수 (마우스, 터치 공용)
-  const getEventPos = (e: any) => {
+  const getEventPos = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     let clientX: number, clientY: number;
