@@ -86,3 +86,6 @@
 
 # VS Code
 /backend/.vscode/
+# environment files
+/backend/.env
+/backend/.env.local
