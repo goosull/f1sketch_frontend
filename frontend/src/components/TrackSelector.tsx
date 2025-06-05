@@ -30,33 +30,33 @@ export default function TrackSelector() {
     })();
   }, []);
 
-  const exampleTracks: TrackInfo[] = [
-    { id: 1, name: "Monaco", region: "Europe", path: [] },
-    { id: 2, name: "Suzuka", region: "Asia", path: [] },
-    { id: 3, name: "Silverstone", region: "Europe", path: [] },
-    { id: 4, name: "Monza", region: "Europe", path: [] },
-    { id: 5, name: "Spa-Francorchamps", region: "Europe", path: [] },
-    { id: 6, name: "Interlagos", region: "South America", path: [] },
-    { id: 7, name: "Yas Marina", region: "Middle East", path: [] },
-    {
-      id: 8,
-      name: "Circuit of the Americas",
-      region: "North America",
-      path: [],
-    },
-    {
-      id: 9,
-      name: "Bahrain International Circuit",
-      region: "Middle East",
-      path: [],
-    },
-    {
-      id: 10,
-      name: "Autodromo Hermanos Rodriguez",
-      region: "North America",
-      path: [],
-    },
-  ];
+  // const exampleTracks: TrackInfo[] = [
+  //   { id: 1, name: "Monaco", region: "Europe", path: [] },
+  //   { id: 2, name: "Suzuka", region: "Asia", path: [] },
+  //   { id: 3, name: "Silverstone", region: "Europe", path: [] },
+  //   { id: 4, name: "Monza", region: "Europe", path: [] },
+  //   { id: 5, name: "Spa-Francorchamps", region: "Europe", path: [] },
+  //   { id: 6, name: "Interlagos", region: "South America", path: [] },
+  //   { id: 7, name: "Yas Marina", region: "Middle East", path: [] },
+  //   {
+  //     id: 8,
+  //     name: "Circuit of the Americas",
+  //     region: "North America",
+  //     path: [],
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Bahrain International Circuit",
+  //     region: "Middle East",
+  //     path: [],
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Autodromo Hermanos Rodriguez",
+  //     region: "North America",
+  //     path: [],
+  //   },
+  // ];
 
   if (loading) {
     return (
@@ -67,7 +67,7 @@ export default function TrackSelector() {
   }
 
   const trackCollection = createListCollection({
-    items: exampleTracks.map((t) => ({
+    items: tracks.map((t) => ({
       label: `${t.name} (${t.region})`,
       value: t.id.toString(),
     })),
