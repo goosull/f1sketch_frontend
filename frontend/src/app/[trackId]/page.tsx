@@ -34,7 +34,7 @@ export default function DrawPage() {
 
   return (
     <Center bg="gray.100" minH="100vh" p="4">
-      <DrawingCanvas trackId={track.id} />
+      <DrawingCanvas trackId={1} />
     </Center>
   );
 }
