@@ -1,91 +1,36 @@
-# =====================
-# Frontend (Next.js/Yarn) ignores
-# =====================
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/frontend/node_modules
-/frontend/.pnp
-/frontend/.pnp.*
-/frontend/.yarn/*
-!/frontend/.yarn/patches
-!/frontend/.yarn/plugins
-!/frontend/.yarn/releases
-!/frontend/.yarn/versions
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
 # testing
-/frontend/coverage
+/coverage
 
-# Next.js build outputs
-/frontend/.next/
-/frontend/out/
+# next.js
+/.next/
+/out/
 
-/frontend/build
+# production
+/build
 
 # misc
-/frontend/.DS_Store
-/frontend/*.pem
+.DS_Store
+*.pem
 
-# debug logs
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
-/frontend/.pnpm-debug.log*
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# environment files (opt-in)
-/frontend/.env*
+# local env files
+.env*.local
 
-# Vercel
-/frontend/.vercel
+# vercel
+.vercel
 
-# TypeScript outputs
-/frontend/*.tsbuildinfo
-/frontend/next-env.d.ts
-
-
-# =====================
-# Backend (Gradle/Java/IDE) ignores
-# =====================
-
-# Documentation or misc file (if you want to ignore HELP.md itself)
-/backend/HELP.md
-
-# Gradle
-/backend/.gradle
-/backend/build/
-/backend/!gradle/wrapper/gradle-wrapper.jar
-/backend/!**/src/main/**/build/
-/backend/!**/src/test/**/build/
-
-# STS (Spring Tool Suite) metadata
-/backend/.apt_generated
-/backend/.classpath
-/backend/.factorypath
-/backend/.project
-/backend/.settings
-/backend/.springBeans
-/backend/.sts4-cache
-/backend/bin/
-/backend/!**/src/main/**/bin/
-/backend/!**/src/test/**/bin/
-
-# IntelliJ IDEA
-/backend/.idea
-/backend/*.iws
-/backend/*.iml
-/backend/*.ipr
-/backend/out/
-/backend/!**/src/main/**/out/
-/backend/!**/src/test/**/out/
-
-# NetBeans
-/backend/nbproject/private/
-/backend/nbbuild/
-/backend/dist/
-/backend/nbdist/
-/backend/.nb-gradle/
-
-# VS Code
-/backend/.vscode/
-# environment files
-/backend/.env
-/backend/.env.local
+# typescript
+*.tsbuildinfo
+next-env.d.ts
