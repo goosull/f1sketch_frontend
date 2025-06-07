@@ -9,7 +9,7 @@ import {
   Popover,
   Image,
 } from "@chakra-ui/react";
-import { ColorModeButton, useColorModeValue } from "./ui/color-mode";
+import { ColorModeButton } from "./ui/color-mode";
 import { usePathname } from "next/navigation";
 import { BsQuestionCircle } from "react-icons/bs";
 

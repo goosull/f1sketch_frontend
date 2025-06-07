@@ -1,16 +1,7 @@
 "use client";
 
 import { DrawingCanvas } from "@/components";
-import {
-  Flex,
-  Box,
-  Heading,
-  Button,
-  Link,
-  Combobox,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Box, Heading, Text } from "@chakra-ui/react";
 
 export default function Home() {
   return (
@@ -42,9 +33,9 @@ export default function Home() {
           Monza
         </Heading>
         <Text fontSize="md" color="text_secondary" mb={6}>
-          Monza Circuit, dubbed the "Temple of Speed," is characterized by its
-          long straights and tight chicanes, demanding low-downforce setups and
-          exceptional braking precision.
+          Monza Circuit, dubbed the &quot;Temple of Speed,&quot; is
+          characterized by its long straights and tight chicanes, demanding
+          low-downforce setups and exceptional braking precision.
         </Text>
         <DrawingCanvas trackId={1} />
       </Box>

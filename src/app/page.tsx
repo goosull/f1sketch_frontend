@@ -5,7 +5,6 @@ import {
   Box,
   Heading,
   Text,
-  Select,
   Button,
   Link,
   Combobox,
@@ -112,7 +111,7 @@ export default function Home() {
             href="/draw"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            It's Lights Out And Away We Go!
+            It&apos;s Lights Out And Away We Go!
           </Link>
         </Button>
 

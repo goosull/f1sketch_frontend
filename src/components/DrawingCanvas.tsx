@@ -1,11 +1,9 @@
 "use client";
 
-import { Box, Button, Text, VStack, HStack } from "@chakra-ui/react";
-import { useColorMode, useColorModeValue } from "./ui/color-mode";
-import { useToast } from "@chakra-ui/toast";
+import { Box, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { submitDrawing } from "../utils/api";
-import { useRouter } from "next/navigation";
+// import { submitDrawing } from "../utils/api";
+// import { submitDrawing } from "@/utils/api";
 
 type Point = { x: number; y: number };
 
@@ -18,8 +16,6 @@ export default function DrawingCanvas({ trackId }: Props) {
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState<Point[]>([]);
   const [mouseUpCount, setMouseUpCount] = useState(0);
-  const toast = useToast();
-  const router = useRouter();
 
   // 캔버스 초기 설정
   useEffect(() => {
@@ -66,6 +62,7 @@ export default function DrawingCanvas({ trackId }: Props) {
     setDrawing(false);
     setMouseUpCount((c) => c + 1);
     console.log(path.map(({ x, y }) => [x, y]));
+    console.log(onSubmit);
   };
 
   const getEventPos = (e: React.MouseEvent | React.TouchEvent) => {
@@ -90,28 +87,29 @@ export default function DrawingCanvas({ trackId }: Props) {
 
   // 제출 버튼 핸들러
   const onSubmit = async () => {
-    if (mouseUpCount === 0) {
-      toast({
-        title: "한 붓으로 그려주세요.",
-        status: "warning",
-      });
-      return;
-    }
-    if (!window.confirm("그림을 제출하시겠습니까?")) return;
+    // if (mouseUpCount === 0) {
+    //   toast({
+    //     title: "한 붓으로 그려주세요.",
+    //     status: "warning",
+    //   });
+    //   return;
+    // }
+    // if (!window.confirm("그림을 제출하시겠습니까?")) return;
 
-    try {
-      const result = await submitDrawing(trackId, path);
-      // 채점 결과 화면으로 이동 (next/navigation 에서는 문자열 형태 URL만 허용)
-      router.push(
-        `/result/${trackId}?score=${result.score}&hausdorff=${result.hausdorffDistance}`
-      );
-    } catch (e) {
-      console.error(e);
-      toast({
-        title: "제출 중 오류가 발생했습니다.",
-        status: "error",
-      });
-    }
+    // try {
+    //   const result = await submitDrawing(trackId, path);
+    //   // 채점 결과 화면으로 이동 (next/navigation 에서는 문자열 형태 URL만 허용)
+    //   router.push(
+    //     `/result/${trackId}?score=${result.score}&hausdorff=${result.hausdorffDistance}`
+    //   );
+    // } catch (e) {
+    //   console.error(e);
+    //   toast({
+    //     title: "제출 중 오류가 발생했습니다.",
+    //     status: "error",
+    //   });
+    // }
+    console.log(trackId, path);
   };
 
   return (
