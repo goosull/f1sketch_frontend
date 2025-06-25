@@ -1,121 +1,135 @@
+// components/TrackSelector.tsx
 "use client";
-
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Box,
-  Spinner,
+  Heading,
   Text,
+  Button,
+  Link,
+  Combobox,
   Portal,
-  Select as ChakraSelect,
-  createListCollection,
+  useListCollection,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import { getTrackList, TrackInfo } from "../utils/api";
+import axios from "axios";
+import { Track } from "@/shared";
 
 export default function TrackSelector() {
-  const [tracks, setTracks] = useState<TrackInfo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { collection, set } = useListCollection<{
+    label: string;
+    value: string;
+  }>({
+    initialItems: [],
+  });
+  const [selectedTrack, setSelectedTrack] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await getTrackList();
-        setTracks(data);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    axios
+      .get<Track[]>("/api/track")
+      .then((res) => {
+        const formatted = res.data.map((t) => ({
+          label: t.name,
+          value: t.id.toString(),
+        }));
+        set(formatted);
+      })
+      .catch(console.error);
   }, []);
 
-  // const exampleTracks: TrackInfo[] = [
-  //   { id: 1, name: "Monaco", region: "Europe", path: [] },
-  //   { id: 2, name: "Suzuka", region: "Asia", path: [] },
-  //   { id: 3, name: "Silverstone", region: "Europe", path: [] },
-  //   { id: 4, name: "Monza", region: "Europe", path: [] },
-  //   { id: 5, name: "Spa-Francorchamps", region: "Europe", path: [] },
-  //   { id: 6, name: "Interlagos", region: "South America", path: [] },
-  //   { id: 7, name: "Yas Marina", region: "Middle East", path: [] },
-  //   {
-  //     id: 8,
-  //     name: "Circuit of the Americas",
-  //     region: "North America",
-  //     path: [],
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Bahrain International Circuit",
-  //     region: "Middle East",
-  //     path: [],
-  //   },
-  //   {
-  //     id: 10,
-  //     name: "Autodromo Hermanos Rodriguez",
-  //     region: "North America",
-  //     path: [],
-  //   },
-  // ];
+  const handleValueChange = (details: { value: string[] }) => {
+    const [first] = details.value;
+    const found = collection.items.find((item) => item.value === first) ?? null;
+    setSelectedTrack(found);
+  };
 
-  if (loading) {
-    return (
-      <Box textAlign="center" mt="20">
-        <Spinner size="xl" />
-      </Box>
-    );
-  }
-
-  const trackCollection = createListCollection({
-    items: tracks.map((t) => ({
-      label: `${t.name} (${t.region})`,
-      value: t.id.toString(),
-    })),
-  });
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = Number(e.target.value);
-    if (!isNaN(id) && id > 0) {
-      router.push(`/draw/${id}`);
+  const handleSelect = () => {
+    if (selectedTrack) {
+      router.push(`/${selectedTrack.value}`);
     }
   };
 
   return (
-    <Box maxW="md" mx="auto" mt="10">
-      <Text fontSize="xl" mb="4">
-        그릴 트랙을 선택하세요
-      </Text>
+    <Box
+      w="full"
+      maxW="lg"
+      p={{ base: 6, md: 8 }}
+      borderRadius="xl"
+      boxShadow="xl"
+      bg="box"
+    >
+      <Box textAlign="center" mb={8}>
+        <Heading
+          as="h2"
+          fontSize={{ base: "2xl", md: "3xl" }}
+          fontWeight="bold"
+          color="text"
+        >
+          Select an F1 Track
+        </Heading>
+        <Text mt={2} fontSize="sm" color="text_secondary">
+          Choose a circuit from the list below to view its layout and details.
+        </Text>
+      </Box>
 
-      <ChakraSelect.Root collection={trackCollection}>
-        <ChakraSelect.HiddenSelect onChange={handleSelectChange} />
-        <ChakraSelect.Control>
-          <ChakraSelect.Trigger>
-            {/* 선택된 값이 없으면 placeholder가 보임 */}
-            <ChakraSelect.ValueText placeholder="트랙을 선택하세요" />
-          </ChakraSelect.Trigger>
-          <ChakraSelect.IndicatorGroup>
-            <ChakraSelect.Indicator />
-          </ChakraSelect.IndicatorGroup>
-        </ChakraSelect.Control>
+      <Combobox.Root
+        collection={collection}
+        openOnClick
+        width="full"
+        onValueChange={handleValueChange}
+      >
+        <Combobox.Label color="text">Track Selection</Combobox.Label>
+        <Combobox.Control color="text_secondary" cursor="pointer">
+          <Combobox.Input placeholder="Select a track..." cursor="pointer" />
+          <Combobox.IndicatorGroup>
+            <Combobox.ClearTrigger />
+            <Combobox.Trigger cursor="pointer" />
+          </Combobox.IndicatorGroup>
+        </Combobox.Control>
         <Portal>
-          <ChakraSelect.Positioner>
-            <ChakraSelect.Content
-              bg="white"
-              boxShadow="md"
-              borderRadius="md"
-              maxH="240px"
-              overflow={"hidden"}
-            >
-              {trackCollection.items.map((item) => (
-                <ChakraSelect.Item item={item} key={item.value}>
+          <Combobox.Positioner>
+            <Combobox.Content bg="navbarBg" color="text">
+              <Combobox.Empty>No items found</Combobox.Empty>
+              {collection.items.map((item) => (
+                <Combobox.Item item={item} key={item.value} cursor="pointer">
                   {item.label}
-                  <ChakraSelect.ItemIndicator></ChakraSelect.ItemIndicator>
-                </ChakraSelect.Item>
+                  <Combobox.ItemIndicator />
+                </Combobox.Item>
               ))}
-            </ChakraSelect.Content>
-          </ChakraSelect.Positioner>
+            </Combobox.Content>
+          </Combobox.Positioner>
         </Portal>
-      </ChakraSelect.Root>
+      </Combobox.Root>
+
+      <Button
+        mt={6}
+        w="full"
+        bg="red.500"
+        color="white"
+        _hover={{ bg: "red.600" }}
+        size="md"
+        onClick={handleSelect}
+        disabled={!selectedTrack}
+      >
+        It&apos;s Lights Out And Away We Go!
+      </Button>
+
+      <Text mt={8} fontSize="xs" textAlign="center" color="text_secondary">
+        Can&apos;t find a track?{" "}
+        <Link
+          href="#"
+          fontWeight="medium"
+          color="red"
+          _hover={{ color: "red_hover" }}
+        >
+          Suggest it here
+        </Link>
+        .
+      </Text>
     </Box>
   );
 }

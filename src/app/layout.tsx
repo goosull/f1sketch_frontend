@@ -16,10 +16,7 @@ export default function RootLayout({
   return (
     <html className={inter.className} suppressHydrationWarning>
       <head />
-      <body
-        suppressHydrationWarning
-        className="relative flex min-h-screen flex-col overflow-x-hidden group/design-root"
-      >
+      <body className="relative flex min-h-screen flex-col overflow-x-hidden group/design-root">
         <ColorModeScript />
         <Provider>
           <Navbar />

@@ -41,7 +41,7 @@ export default function Navbar() {
         align="center"
         justify="space-between"
       >
-        <Link _hover={{ textDecoration: "none" }}>
+        <Link _hover={{ textDecoration: "none" }} href="/">
           <Image src="/Icon.svg" alt="F1 Sketch Logo" height="24px" />
           <Text fontSize="xl" fontWeight="bold" color="text">
             F1 Sketch

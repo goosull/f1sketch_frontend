@@ -27,7 +27,7 @@ export default function Home() {
         <Heading
           as="h2"
           fontSize={{ base: "xl", md: "2xl" }}
-          color="red"
+          color="themeRed"
           mb={2}
         >
           Monza

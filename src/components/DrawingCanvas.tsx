@@ -2,6 +2,7 @@
 
 import { Box, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import ScoreBoard from "./Scoreboard";
 // import { submitDrawing } from "../utils/api";
 // import { submitDrawing } from "@/utils/api";
 
@@ -16,6 +17,10 @@ export default function DrawingCanvas({ trackId }: Props) {
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState<Point[]>([]);
   const [mouseUpCount, setMouseUpCount] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState<number>(0);
+
+  console.log("DrawingCanvas mounted with trackId:", trackId);
 
   // 캔버스 초기 설정
   useEffect(() => {
@@ -62,7 +67,7 @@ export default function DrawingCanvas({ trackId }: Props) {
     setDrawing(false);
     setMouseUpCount((c) => c + 1);
     console.log(path.map(({ x, y }) => [x, y]));
-    console.log(onSubmit);
+    onSubmit();
   };
 
   const getEventPos = (e: React.MouseEvent | React.TouchEvent) => {
@@ -85,31 +90,16 @@ export default function DrawingCanvas({ trackId }: Props) {
     return { offsetX: x, offsetY };
   };
 
-  // 제출 버튼 핸들러
   const onSubmit = async () => {
-    // if (mouseUpCount === 0) {
-    //   toast({
-    //     title: "한 붓으로 그려주세요.",
-    //     status: "warning",
-    //   });
-    //   return;
-    // }
-    // if (!window.confirm("그림을 제출하시겠습니까?")) return;
+    // API 호출 예시
+    // const response = await submitDrawing(trackId, path);
+    // setScore(response.score);
 
-    // try {
-    //   const result = await submitDrawing(trackId, path);
-    //   // 채점 결과 화면으로 이동 (next/navigation 에서는 문자열 형태 URL만 허용)
-    //   router.push(
-    //     `/result/${trackId}?score=${result.score}&hausdorff=${result.hausdorffDistance}`
-    //   );
-    // } catch (e) {
-    //   console.error(e);
-    //   toast({
-    //     title: "제출 중 오류가 발생했습니다.",
-    //     status: "error",
-    //   });
-    // }
-    console.log(trackId, path);
+    // 임시로 랜덤 점수 할당
+    const simulatedScore = Math.floor(Math.random() * 101);
+    setScore(simulatedScore);
+    setSubmitted(true);
+    console.log("Drawing submitted with score:", simulatedScore);
   };
 
   return (
@@ -142,6 +132,7 @@ export default function DrawingCanvas({ trackId }: Props) {
             style={{ width: "100%", height: "100%" }}
           />
         </Box>
+        {!!submitted && <ScoreBoard score={score} />}
       </Box>
     </VStack>
   );

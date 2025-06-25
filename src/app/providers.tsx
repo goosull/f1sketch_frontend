@@ -49,7 +49,7 @@ const config = defineConfig({
             _dark: "#94a3b8",
           },
         },
-        red: {
+        themeRed: {
           value: {
             base: "#E92933",
             _dark: "#F87171",
