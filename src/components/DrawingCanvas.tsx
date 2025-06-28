@@ -3,8 +3,7 @@
 import { Box, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import ScoreBoard from "./Scoreboard";
-// import { submitDrawing } from "../utils/api";
-// import { submitDrawing } from "@/utils/api";
+import axios from "axios";
 
 type Point = { x: number; y: number };
 
@@ -19,6 +18,7 @@ export default function DrawingCanvas({ trackId }: Props) {
   const [mouseUpCount, setMouseUpCount] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number>(0);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
 
   console.log("DrawingCanvas mounted with trackId:", trackId);
 
@@ -67,7 +67,7 @@ export default function DrawingCanvas({ trackId }: Props) {
     setDrawing(false);
     setMouseUpCount((c) => c + 1);
     console.log(path.map(({ x, y }) => [x, y]));
-    onSubmit();
+    handleSubmit();
   };
 
   const getEventPos = (e: React.MouseEvent | React.TouchEvent) => {
@@ -90,16 +90,57 @@ export default function DrawingCanvas({ trackId }: Props) {
     return { offsetX: x, offsetY };
   };
 
-  const onSubmit = async () => {
-    // API 호출 예시
-    // const response = await submitDrawing(trackId, path);
-    // setScore(response.score);
+  const handleSubmit = async () => {
+    if (submitted) return;
 
-    // 임시로 랜덤 점수 할당
-    const simulatedScore = Math.floor(Math.random() * 101);
-    setScore(simulatedScore);
-    setSubmitted(true);
-    console.log("Drawing submitted with score:", simulatedScore);
+    axios
+      .post("/api/submission", {
+        user_path_json: path.map(({ x, y }) => [x, y]),
+        track_id: trackId,
+      })
+      .then((response) => {
+        console.log("Drawing submitted successfully:", response.data);
+        const simulatedScore = response.data.score;
+        setScore(simulatedScore);
+        setSubmissionId(response.data.id);
+        setSubmitted(true);
+      })
+      .catch((error) => {
+        console.error("Error submitting drawing:", error);
+        // 에러 처리 로직 추가 가능
+      });
+  };
+
+  const handleReset = () => {
+    setDrawing(false);
+    setPath([]);
+    setMouseUpCount(0);
+    setSubmitted(false);
+    setScore(0);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d")!;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  };
+
+  const handleLeaderboard = (nickname: string) => {
+    console.log("Submitting to leaderboard with nickname:", nickname);
+    if (!nickname.trim()) return;
+    axios
+      .post("/api/leaderboard", {
+        nickname: nickname.trim(),
+        submissionId: submissionId,
+      })
+      .then((response) => {
+        console.log("Leaderboard submission successful:", response.data);
+        // 추가적인 로직이 필요할 경우 여기에 작성
+      })
+      .catch((error) => {
+        console.error("Error submitting to leaderboard:", error);
+      });
   };
 
   return (
@@ -132,7 +173,13 @@ export default function DrawingCanvas({ trackId }: Props) {
             style={{ width: "100%", height: "100%" }}
           />
         </Box>
-        {!!submitted && <ScoreBoard score={score} />}
+        {!!submitted && (
+          <ScoreBoard
+            score={score}
+            onLeaderboard={handleLeaderboard}
+            onReset={handleReset}
+          />
+        )}
       </Box>
     </VStack>
   );

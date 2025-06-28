@@ -14,11 +14,19 @@ import {
 
 interface ScoreBoardProps {
   score: number;
+  onLeaderboard?: (nickname: string) => void;
+  onReset?: () => void;
 }
 
-export default function ScoreBoard({ score }: ScoreBoardProps) {
+export default function ScoreBoard({
+  score,
+  onLeaderboard,
+  onReset,
+}: ScoreBoardProps) {
   const [nickname, setNickname] = useState("");
+  const [leaderboardSubmitted, setLeaderboardSubmitted] = useState(false);
   const router = useRouter();
+
   return (
     <Center
       position="absolute"
@@ -80,7 +88,13 @@ export default function ScoreBoard({ score }: ScoreBoardProps) {
               bg="themeRed"
               _hover={{ bg: "red.600" }}
               w="100%"
-              disabled={!nickname.trim()}
+              disabled={!nickname.trim() || leaderboardSubmitted}
+              onClick={() => {
+                if (onLeaderboard) {
+                  onLeaderboard(nickname.trim());
+                }
+                setLeaderboardSubmitted(true);
+              }}
             >
               Submit to Leaderboard
             </Button>
@@ -93,7 +107,12 @@ export default function ScoreBoard({ score }: ScoreBoardProps) {
               >
                 Main Menu
               </Button>
-              <Button variant="outline" colorPalette="gray" flex={1}>
+              <Button
+                variant="outline"
+                colorPalette="gray"
+                flex={1}
+                onClick={onReset}
+              >
                 Draw Again
               </Button>
             </HStack>

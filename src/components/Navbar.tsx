@@ -12,6 +12,7 @@ import {
 import { ColorModeButton } from "./ui/color-mode";
 import { usePathname } from "next/navigation";
 import { BsQuestionCircle } from "react-icons/bs";
+import { LanguageSwitch } from "./LanguageSwitch";
 
 export default function Navbar() {
   const path = usePathname();
@@ -69,6 +70,9 @@ export default function Navbar() {
               borderRadius="full"
               _hover={{ color: "red.500" }}
             />
+
+            <LanguageSwitch />
+
             <Popover.Root>
               <Popover.Trigger color="text" _hover={{ color: "red.500" }}>
                 <BsQuestionCircle size={24} />

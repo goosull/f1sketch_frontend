@@ -14,8 +14,10 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Track } from "@/shared";
+import { useTranslation } from "react-i18next";
 
 export default function TrackSelector() {
+  const [tracks, setTracks] = useState<Track[]>([]);
   const { collection, set } = useListCollection<{
     label: string;
     value: string;
@@ -27,19 +29,25 @@ export default function TrackSelector() {
     value: string;
   } | null>(null);
   const router = useRouter();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     axios
       .get<Track[]>("/api/track")
       .then((res) => {
-        const formatted = res.data.map((t) => ({
-          label: t.name,
-          value: t.id.toString(),
-        }));
-        set(formatted);
+        setTracks(res.data);
       })
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    const lang = i18n.language === "ko" ? "ko" : "en";
+    const formatted = tracks.map((t) => ({
+      label: lang === "ko" ? t.region_ko : t.region_en,
+      value: t.id.toString(),
+    }));
+    set(formatted);
+  }, [i18n.language, tracks, set]);
 
   const handleValueChange = (details: { value: string[] }) => {
     const [first] = details.value;
