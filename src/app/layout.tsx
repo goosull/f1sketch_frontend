@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import Provider from "./providers";
+import { Provider, I18nProvider } from "./providers";
 import { ColorModeScript } from "@chakra-ui/color-mode";
 import { Navbar, Footer } from "@/components";
 
@@ -18,11 +18,13 @@ export default function RootLayout({
       <head />
       <body className="relative flex min-h-screen flex-col overflow-x-hidden group/design-root">
         <ColorModeScript />
-        <Provider>
-          <Navbar />
-          <div className="flex flex-col grow h-full">{children}</div>
-          <Footer />
-        </Provider>
+        <I18nProvider>
+          <Provider>
+            <Navbar />
+            <div className="flex flex-col grow h-full">{children}</div>
+            <Footer />
+          </Provider>
+        </I18nProvider>
       </body>
     </html>
   );

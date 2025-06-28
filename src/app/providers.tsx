@@ -8,6 +8,9 @@ import {
   defineConfig,
 } from "@chakra-ui/react";
 import { ColorModeProvider } from "@/components/ui/color-mode";
+import { ReactNode } from "react";
+import { I18nextProvider } from "react-i18next";
+import i18n from "@/utils/i18n";
 
 const config = defineConfig({
   theme: {
@@ -23,6 +26,12 @@ const config = defineConfig({
           value: {
             base: "#ffffff",
             _dark: "#1a202c",
+          },
+        },
+        navbarHover: {
+          value: {
+            base: "#efefef",
+            _dark: "#2d3748",
           },
         },
         box: {
@@ -69,7 +78,7 @@ const config = defineConfig({
 
 const system = createSystem(defaultConfig, config);
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export function Provider(props: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={system}>
       <ThemeProvider attribute="class" disableTransitionOnChange>
@@ -77,4 +86,8 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </ThemeProvider>
     </ChakraProvider>
   );
+}
+
+export function I18nProvider({ children }: { children: ReactNode }) {
+  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 }
