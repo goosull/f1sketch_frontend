@@ -1,36 +1,51 @@
-"use client"
+"use client";
 
 import {
   Toaster as ChakraToaster,
   Portal,
   Spinner,
-  Stack,
+  HStack,
   Toast,
   createToaster,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { FaCheck } from "react-icons/fa6";
+import { MdOutlineErrorOutline } from "react-icons/md";
 
 export const toaster = createToaster({
   placement: "bottom-end",
   pauseOnPageIdle: true,
-})
+});
 
 export const Toaster = () => {
   return (
     <Portal>
       <ChakraToaster toaster={toaster} insetInline={{ mdDown: "4" }}>
         {(toast) => (
-          <Toast.Root width={{ md: "sm" }}>
+          <Toast.Root width={{ md: "sm" }} bg="bg" color="text">
             {toast.type === "loading" ? (
               <Spinner size="sm" color="blue.solid" />
             ) : (
               <Toast.Indicator />
             )}
-            <Stack gap="1" flex="1" maxWidth="100%">
+            <HStack gap="2" flex="1" maxWidth="100%">
+              <HStack
+                color={
+                  toast.type === "ok"
+                    ? "green.solid"
+                    : toast.type === "not-ok"
+                    ? "themeRed"
+                    : "text"
+                }
+              >
+                {toast.type === "ok" && <FaCheck />}
+                {toast.type === "not-ok" && <MdOutlineErrorOutline />}
+              </HStack>
+
               {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
               {toast.description && (
                 <Toast.Description>{toast.description}</Toast.Description>
               )}
-            </Stack>
+            </HStack>
             {toast.action && (
               <Toast.ActionTrigger>{toast.action.label}</Toast.ActionTrigger>
             )}
@@ -39,5 +54,5 @@ export const Toaster = () => {
         )}
       </ChakraToaster>
     </Portal>
-  )
-}
+  );
+};
