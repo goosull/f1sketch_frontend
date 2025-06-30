@@ -40,6 +40,12 @@ const config = defineConfig({
             _dark: "#1E293B",
           },
         },
+        boxHeader: {
+          value: {
+            base: "#fff1f1",
+            _dark: "#283548",
+          },
+        },
         border: {
           value: {
             base: "#E5E7EB",
