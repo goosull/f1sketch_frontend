@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Spinner, VStack, Center } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import ScoreBoard from "./Scoreboard";
+import { useRouter } from "next/navigation";
+import { ScoreBoard, Toaster, toaster } from "@/components";
 import axios from "axios";
 
 type Point = { x: number; y: number };
@@ -19,8 +20,8 @@ export default function DrawingCanvas({ trackId }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number>(0);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
-
-  console.log("DrawingCanvas mounted with trackId:", trackId);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   // 캔버스 초기 설정
   useEffect(() => {
@@ -92,22 +93,33 @@ export default function DrawingCanvas({ trackId }: Props) {
 
   const handleSubmit = async () => {
     if (submitted) return;
-
+    setIsLoading(true);
     axios
       .post("/api/submission", {
         user_path_json: path.map(({ x, y }) => [x, y]),
         track_id: trackId,
       })
       .then((response) => {
-        console.log("Drawing submitted successfully:", response.data);
+        toaster.create({
+          type: "ok",
+          description: "Your drawing has been submitted successfully!",
+          closable: true,
+        });
         const simulatedScore = response.data.score;
         setScore(simulatedScore);
         setSubmissionId(response.data.id);
         setSubmitted(true);
       })
-      .catch((error) => {
-        console.error("Error submitting drawing:", error);
-        // 에러 처리 로직 추가 가능
+      .catch(() => {
+        toaster.create({
+          type: "not-ok",
+          description:
+            "There was an error submitting your drawing. Please try again later.",
+          closable: true,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -126,25 +138,60 @@ export default function DrawingCanvas({ trackId }: Props) {
     }
   };
 
-  const handleLeaderboard = (nickname: string) => {
-    console.log("Submitting to leaderboard with nickname:", nickname);
-    if (!nickname.trim()) return;
+  const handleLeaderboard = (username: string) => {
+    console.log("Submitting to leaderboard with nickname:", username);
+    if (!username.trim()) return;
+    if (!submissionId) {
+      toaster.create({
+        description:
+          "Please submit your drawing before submitting to the leaderboard.",
+        type: "not-ok",
+        closable: true,
+      });
+      return;
+    }
+    setIsLoading(true);
     axios
       .post("/api/leaderboard", {
-        nickname: nickname.trim(),
+        username: username.trim(),
         submissionId: submissionId,
       })
-      .then((response) => {
-        console.log("Leaderboard submission successful:", response.data);
-        // 추가적인 로직이 필요할 경우 여기에 작성
+      .then(() => {
+        toaster.create({
+          description: "Leaderboard Submission Completed!",
+          closable: true,
+          type: "ok",
+          action: {
+            label: "Leaderboard",
+            onClick: () => {
+              router.push(`/leaderboard?trackId=${trackId}`);
+            },
+          },
+        });
+        setSubmitted(true);
       })
-      .catch((error) => {
-        console.error("Error submitting to leaderboard:", error);
+      .catch(() => {
+        toaster.create({
+          type: "not-ok",
+          description:
+            "There was an error submitting your score to the leaderboard. Please try again later.",
+          closable: true,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   return (
     <VStack gap={4} align="center" borderRadius="xl">
+      {isLoading && (
+        <Box pos="absolute" inset="0" bg="bg/80" zIndex={1000}>
+          <Center h="full">
+            <Spinner size="xl" color="themeRed" />
+          </Center>
+        </Box>
+      )}
       <Box
         p={4}
         bg="bg"
@@ -181,6 +228,7 @@ export default function DrawingCanvas({ trackId }: Props) {
           />
         )}
       </Box>
+      <Toaster />
     </VStack>
   );
 }

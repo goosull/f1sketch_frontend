@@ -38,7 +38,7 @@ export default function ScoreBoard({
       transform="translate(-50%, -50%)"
       borderRadius="xl"
       shadow="xs"
-      zIndex={1000}
+      zIndex={50}
     >
       <Box
         maxW="sm"
@@ -64,6 +64,7 @@ export default function ScoreBoard({
               justifyContent="space-between"
               fontSize="sm"
               fontWeight="medium"
+              color="text_secondary"
             >
               <Text>Accuracy</Text>
               <Text>{score}%</Text>
@@ -85,6 +86,10 @@ export default function ScoreBoard({
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               marginTop="6"
+              borderColor="text_secondary"
+              _placeholder={{ color: "text_secondary" }}
+              color="text"
+              _focus={{ outline: "none", borderColor: "themeRed" }}
             />
             <Button
               bg="themeRed"
@@ -103,16 +108,26 @@ export default function ScoreBoard({
             <HStack justifyContent="space-between" w="100%">
               <Button
                 variant="outline"
-                colorPalette="gray"
                 flex={1}
                 onClick={() => router.push("/")}
+                color="text_secondary"
+                _hover={{
+                  color: "themeRed",
+                  backgroundColor: "transparent",
+                  borderColor: "themeRed",
+                }}
               >
                 Main Menu
               </Button>
               <Button
                 variant="outline"
-                colorPalette="gray"
                 flex={1}
+                color="text_secondary"
+                _hover={{
+                  color: "themeRed",
+                  backgroundColor: "transparent",
+                  borderColor: "themeRed",
+                }}
                 onClick={onReset}
               >
                 Draw Again
