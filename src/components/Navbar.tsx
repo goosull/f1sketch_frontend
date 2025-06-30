@@ -59,6 +59,7 @@ export default function Navbar() {
                 color={path === link.href ? "red.500" : "text"}
                 _hover={{ color: "red.500" }}
                 key={link.href}
+                href={link.href}
               >
                 {link.label}
               </Link>

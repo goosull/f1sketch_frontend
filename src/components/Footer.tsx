@@ -5,14 +5,15 @@ export default function Footer() {
     <Box
       as="footer"
       bg="navbarBg"
+      position="absolute"
       display="flex"
       alignItems="center"
       justifyContent="center"
       h="5vh"
       borderTopWidth={1}
       bottom={0}
+      left={0}
       width="100%"
-      zIndex={1000}
       fontSize="sm"
       color="text_secondary"
     >
