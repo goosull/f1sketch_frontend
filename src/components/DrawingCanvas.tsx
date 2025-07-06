@@ -209,7 +209,8 @@ export default function DrawingCanvas({ trackId }: Props) {
           borderRadius="xl"
           overflow="hidden"
           w="full" // 너비를 100%
-          maxW="800px" // 최대 너비
+          minW="802px" // 최소 너비
+          maxW="802px" // 최대 너비
           h="600px"
           position="relative"
         >

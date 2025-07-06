@@ -28,6 +28,7 @@ export default function Home() {
   const [track, setTrack] = useState<Track | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [reveal, setReveal] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -36,11 +37,7 @@ export default function Home() {
       .get<Track>(`/api/track/${trackId}`)
       .then((res) => {
         setTrack(res.data);
-        setReveal(true);
-        const timer = setTimeout(() => {
-          setReveal(false);
-        }, 5000);
-        return () => clearTimeout(timer);
+        setImageLoaded(false);
       })
       .catch((error) => {
         console.error("Error fetching track data:", error);
@@ -50,6 +47,24 @@ export default function Home() {
         setIsLoading(false);
       });
   }, [trackId]);
+
+  useEffect(() => {
+    if (!track?.image_url) return;
+    const img = new window.Image();
+    img.src = track.image_url;
+    img.onload = () => {
+      setImageLoaded(true);
+    };
+  }, [track?.image_url]);
+
+  useEffect(() => {
+    if (imageLoaded) {
+      setReveal(true);
+
+      const timer = setTimeout(() => setReveal(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [imageLoaded]);
 
   return (
     <Flex
