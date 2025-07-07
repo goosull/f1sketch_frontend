@@ -33,7 +33,7 @@ export default function TrackSelector() {
 
   useEffect(() => {
     axios
-      .get<Track[]>("/api/track")
+      .get<Track[]>("/api/track/info")
       .then((res) => {
         setTracks(res.data);
       })
