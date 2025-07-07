@@ -3,6 +3,7 @@ import { Box, Text, Spinner, Center } from "@chakra-ui/react";
 import { useColorMode } from "./ui/color-mode";
 import axios from "axios";
 import { Submission, Point } from "@/shared";
+import { useTranslation } from "react-i18next";
 
 interface LeaderboardDetailProps {
   id: string;
@@ -11,6 +12,7 @@ interface LeaderboardDetailProps {
 export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
   const [submission, setSubmission] = React.useState<Submission | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const t = useTranslation().t;
 
   useEffect(() => {
     setLoading(true);
@@ -33,7 +35,8 @@ export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
         ) : (
           <>
             <Text fontSize="xl" fontWeight="bold" mb={4} color="text">
-              {submission?.username}&apos;s Track
+              {submission?.username}
+              {t("leaderboard.detail")}
             </Text>
             <Box
               display="flex"

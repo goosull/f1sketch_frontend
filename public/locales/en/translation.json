@@ -23,7 +23,8 @@
     "user": "User",
     "accuracy": "Accuracy",
     "placeholder": "Select a track...",
-    "notrack": "No tracks found"
+    "notrack": "No tracks found",
+    "detail": "'s Track"
   },
   "help": {
     "title": "Getting Started",
