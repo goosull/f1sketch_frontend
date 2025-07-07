@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ScoreBoard, Toaster, toaster } from "@/components";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 type Point = { x: number; y: number };
 
@@ -22,6 +23,7 @@ export default function DrawingCanvas({ trackId }: Props) {
   const [submissionId, setSubmissionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { t, i18n } = useTranslation();
 
   // 캔버스 초기 설정
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function DrawingCanvas({ trackId }: Props) {
       .then((response) => {
         toaster.create({
           type: "ok",
-          description: "Your drawing has been submitted successfully!",
+          description: t("toast.submitok"),
           closable: true,
         });
         const simulatedScore = response.data.score;
@@ -114,7 +116,8 @@ export default function DrawingCanvas({ trackId }: Props) {
         toaster.create({
           type: "not-ok",
           description:
-            "There was an error submitting your drawing. Please try again later.",
+            t("toast.submitnotok") ||
+            "There was an error submitting your drawing. Please try again.",
           closable: true,
         });
       })
@@ -144,6 +147,7 @@ export default function DrawingCanvas({ trackId }: Props) {
     if (!submissionId) {
       toaster.create({
         description:
+          t("toast.submissionnotfound") ||
           "Please submit your drawing before submitting to the leaderboard.",
         type: "not-ok",
         closable: true,
@@ -158,11 +162,12 @@ export default function DrawingCanvas({ trackId }: Props) {
       })
       .then(() => {
         toaster.create({
-          description: "Leaderboard Submission Completed!",
+          description:
+            t("toast.leaderboardok") || "Leaderboard Submission Completed!",
           closable: true,
           type: "ok",
           action: {
-            label: "Leaderboard",
+            label: i18n.language === "ko" ? "리더보드" : "View Leaderboard",
             onClick: () => {
               router.push(`/leaderboard?trackId=${trackId}`);
             },
@@ -174,7 +179,8 @@ export default function DrawingCanvas({ trackId }: Props) {
         toaster.create({
           type: "not-ok",
           description:
-            "There was an error submitting your score to the leaderboard. Please try again later.",
+            t("toast.leaderboardnotok") ||
+            "There was an error submitting to the leaderboard. Please try again.",
           closable: true,
         });
       })

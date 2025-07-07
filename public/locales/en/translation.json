@@ -29,5 +29,12 @@
   "help": {
     "title": "Getting Started",
     "description": "Select an F1 track and draw its layout.\nWhen you select a track, its layout briefly appears on the screen.\nDraw the layout to measure your accuracy.\nSubmit your score to the leaderboard!"
+  },
+  "toast": {
+    "submitok": "Your drawing has been submitted successfully!",
+    "submitnotok": "There was an error submitting your drawing. Please try again.",
+    "submissionnotfound": "Please submit your drawing before submitting to the leaderboard.",
+    "leaderboardok": "Leaderboard Submission Completed!",
+    "leaderboardnotok": "There was an error submitting to the leaderboard. Please try again."
   }
 }
