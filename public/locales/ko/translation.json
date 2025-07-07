@@ -1,27 +1,29 @@
 {
   "root": {
     "title": "트랙을 선택하세요",
-    "description": "선택한 트랙의 레이아웃을 보고 따라 그려보세요.",
+    "description": "트랙을 선택한 뒤 레이아웃을 보고 따라 그려보세요.",
     "label": "트랙 선택",
     "placeholder": "트랙을 선택하세요...",
     "button": "가속을 시작합니다!!!",
     "feedback": "의견이 있으신가요?",
-    "feedbackLink": "피드백을 남겨주세요!"
+    "feedbackLink": "피드백을 남겨주세요!",
+    "notrack": "트랙을 불러오는 중입니다..."
   },
   "scoreboard": {
-    "title": "당신의 점수",
+    "title": "당신의 점수는?",
     "accuracy": "정확도",
-    "nickname": "닉네임을 입력하세요",
+    "nickname": "닉네임을 입력하세요.",
     "submit": "순위표에 제출",
     "main": "메인 메뉴",
     "retry": "다시 그리기"
   },
   "leaderboard": {
-    "title": "순위표",
+    "title": "리더보드",
     "rank": "순위",
-    "user": "사용자",
+    "user": "닉네임",
     "accuracy": "정확도",
-    "placeholder": "트랙을 선택하세요..."
+    "placeholder": "트랙을 선택하세요...",
+    "notrack": "트랙을 불러오는 중입니다..."
   },
   "help": {
     "title": "시작하기",

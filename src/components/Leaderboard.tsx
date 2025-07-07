@@ -50,7 +50,7 @@ export function Leaderboard() {
     initialItems: [],
   });
   const [selectedTrack, setSelectedTrack] = useState<TrackOption | null>(null);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const searchParams = useSearchParams();
   const trackId = searchParams.get("trackId");
 
@@ -127,7 +127,7 @@ export function Leaderboard() {
         <Box w="full">
           <HStack justify="space-between" align="center" mb={6}>
             <Text fontSize="3xl" fontWeight="bold" color="themeRed">
-              Leaderboard
+              {t("leaderboard.title")}
             </Text>
 
             <Combobox.Root
@@ -140,7 +140,7 @@ export function Leaderboard() {
             >
               <Combobox.Control color="text_secondary" cursor="pointer">
                 <Combobox.Input
-                  placeholder="Select a track..."
+                  placeholder={t("leaderboard.placeholder")}
                   cursor="pointer"
                 />
                 <Combobox.IndicatorGroup>
@@ -150,7 +150,7 @@ export function Leaderboard() {
               <Portal>
                 <Combobox.Positioner>
                   <Combobox.Content bg="navbarBg" color="text">
-                    <Combobox.Empty>No items found</Combobox.Empty>
+                    <Combobox.Empty>{t("leaderboard.notrack")}</Combobox.Empty>
                     {collection.items.map((item) => (
                       <Combobox.Item
                         item={item}
@@ -189,10 +189,10 @@ export function Leaderboard() {
               textTransform="uppercase"
               letterSpacing="wider"
             >
-              <Box w="80px">Rank</Box>
-              <Box flex="1">User</Box>
+              <Box w="80px">{t("leaderboard.rank")}</Box>
+              <Box flex="1">{t("leaderboard.user")}</Box>
               <Box w="120px" textAlign="right">
-                Accuracy
+                {t("leaderboard.accuracy")}
               </Box>
             </Flex>
 

@@ -5,8 +5,9 @@
     "label": "Track Selection",
     "placeholder": "Select a track...",
     "button": "It's Lights Out and Away We Go!",
-    "feedback": "Do you have any feedback or suggestions?",
-    "feedbackLink": "We'd love to hear from you!"
+    "feedback": "Do you have any feedback?",
+    "feedbackLink": "We'd love to hear from you!",
+    "notrack": "No tracks found"
   },
   "scoreboard": {
     "title": "Your Score",
@@ -21,7 +22,8 @@
     "rank": "Rank",
     "user": "User",
     "accuracy": "Accuracy",
-    "placeholder": "Select a track..."
+    "placeholder": "Select a track...",
+    "notrack": "No tracks found"
   },
   "help": {
     "title": "Getting Started",

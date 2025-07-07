@@ -13,6 +13,7 @@ import {
   Input,
   HStack,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 interface ScoreBoardProps {
   score: number;
@@ -28,6 +29,7 @@ export default function ScoreBoard({
   const [nickname, setNickname] = useState("");
   const [leaderboardSubmitted, setLeaderboardSubmitted] = useState(false);
   const router = useRouter();
+  const t = useTranslation().t;
 
   return (
     <Center
@@ -51,7 +53,7 @@ export default function ScoreBoard({
       >
         <VStack gap={6} align="center">
           <Heading size="2xl" color="text">
-            Your Score
+            {t("scoreboard.title")}
           </Heading>
           <Heading size="6xl" color="themeRed">
             {score}
@@ -66,7 +68,7 @@ export default function ScoreBoard({
               fontWeight="medium"
               color="text_secondary"
             >
-              <Text>Accuracy</Text>
+              <Text>{t("scoreboard.accuracy")}</Text>
               <Text>{score}%</Text>
             </Box>
             <Progress.Root
@@ -82,7 +84,7 @@ export default function ScoreBoard({
             </Progress.Root>
 
             <Input
-              placeholder="Enter your nickname"
+              placeholder={t("scoreboard.nickname")}
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               marginTop="6"
@@ -103,7 +105,7 @@ export default function ScoreBoard({
                 setLeaderboardSubmitted(true);
               }}
             >
-              Submit to Leaderboard
+              {t("scoreboard.submit")}
             </Button>
             <HStack justifyContent="space-between" w="100%">
               <Button
@@ -117,7 +119,7 @@ export default function ScoreBoard({
                   borderColor: "themeRed",
                 }}
               >
-                Main Menu
+                {t("scoreboard.main")}
               </Button>
               <Button
                 variant="outline"
@@ -130,7 +132,7 @@ export default function ScoreBoard({
                 }}
                 onClick={onReset}
               >
-                Draw Again
+                {t("scoreboard.retry")}
               </Button>
             </HStack>
           </Box>

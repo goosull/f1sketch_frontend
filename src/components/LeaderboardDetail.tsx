@@ -33,7 +33,7 @@ export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
         ) : (
           <>
             <Text fontSize="xl" fontWeight="bold" mb={4} color="text">
-              {submission?.username}'s Track
+              {submission?.username}&apos;s Track
             </Text>
             <Box
               display="flex"
@@ -53,9 +53,10 @@ export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
     </Box>
   );
 }
+type RawPoint = Point | { x: number; y: number } | { lat: number; lng: number };
 
 interface PathCanvasProps {
-  points: Point[];
+  points: RawPoint[];
   width: number;
   height: number;
 }
@@ -65,7 +66,7 @@ const PathCanvas: React.FC<PathCanvasProps> = ({ points, width, height }) => {
   const { colorMode } = useColorMode();
 
   // 다양한 Point 타입을 { x, y } 로 변환
-  const toXY = (pt: any): { x: number; y: number } => {
+  const toXY = (pt: RawPoint): { x: number; y: number } => {
     if (Array.isArray(pt) && pt.length >= 2) {
       return { x: pt[0], y: pt[1] };
     }
@@ -110,7 +111,7 @@ const PathCanvas: React.FC<PathCanvasProps> = ({ points, width, height }) => {
     ctx.strokeStyle = colorMode === "dark" ? "#F87171" : "text";
     ctx.lineWidth = 3;
     ctx.stroke();
-  }, [points, width, height]);
+  }, [points, width, height, colorMode]);
 
   return <canvas ref={canvasRef} width={width} height={height} />;
 };
