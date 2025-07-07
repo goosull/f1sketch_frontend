@@ -12,24 +12,30 @@ import {
   Center,
   Input,
   HStack,
+  Clipboard,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { FiShare2 } from "react-icons/fi";
+import { Track } from "@/shared";
 
 interface ScoreBoardProps {
+  track?: Track; // Optional track prop for sharing
   score: number;
   onLeaderboard?: (nickname: string) => void;
   onReset?: () => void;
 }
 
 export default function ScoreBoard({
+  track,
   score,
   onLeaderboard,
   onReset,
 }: ScoreBoardProps) {
   const [nickname, setNickname] = useState("");
   const [leaderboardSubmitted, setLeaderboardSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const router = useRouter();
-  const t = useTranslation().t;
+  const { t, i18n } = useTranslation();
 
   return (
     <Center
@@ -68,8 +74,33 @@ export default function ScoreBoard({
               fontWeight="medium"
               color="text_secondary"
             >
-              <Text>{t("scoreboard.accuracy")}</Text>
               <Text>{score}%</Text>
+              <Clipboard.Root
+                value={t("scoreboard.sharetext", {
+                  track:
+                    i18n.language === "ko" ? track?.name_ko : track?.name_en,
+                  score: score,
+                  trackId: track?.id,
+                })}
+              >
+                <Clipboard.Trigger
+                  textStyle="label"
+                  display={"flex"}
+                  alignItems="center"
+                  gap={1}
+                  color="text_secondary"
+                  _hover={{ color: "themeRed" }}
+                  transition="color 0.15s"
+                  cursor={"pointer"}
+                  onClick={() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 5000);
+                  }}
+                >
+                  {copied ? t("scoreboard.copied") : t("scoreboard.copy")}
+                  <FiShare2 />
+                </Clipboard.Trigger>
+              </Clipboard.Root>
             </Box>
             <Progress.Root
               value={score}

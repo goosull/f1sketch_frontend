@@ -11,7 +11,9 @@
   },
   "scoreboard": {
     "title": "당신의 점수는?",
-    "accuracy": "정확도",
+    "copy": "공유하기",
+    "copied": "복사 완료!",
+    "sharetext": "제가 그린 {{track}}의 점수는 {{score}}%입니다! 당신은 제 점수를 이길 수 있을까요? https://f1sketch.vercel.app/{{trackId}}",
     "nickname": "닉네임을 입력하세요.",
     "submit": "순위표에 제출",
     "main": "메인 메뉴",

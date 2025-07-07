@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ScoreBoard, Toaster, toaster } from "@/components";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { Track } from "@/shared";
 
 type Point = { x: number; y: number };
 
@@ -17,6 +18,7 @@ export default function DrawingCanvas({ trackId }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState<Point[]>([]);
+  const [track, setTrack] = useState<Track | undefined>(undefined);
   const [mouseUpCount, setMouseUpCount] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number>(0);
@@ -38,6 +40,18 @@ export default function DrawingCanvas({ trackId }: Props) {
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
   }, []);
+
+  // 트랙 정보 가져오기
+  useEffect(() => {
+    axios
+      .get<Track>(`/api/track/${trackId}`)
+      .then((response) => {
+        setTrack(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching track info:", error);
+      });
+  }, [trackId, router, t]);
 
   // 마우스/터치 이벤트 핸들러
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
@@ -229,6 +243,7 @@ export default function DrawingCanvas({ trackId }: Props) {
         </Box>
         {!!submitted && (
           <ScoreBoard
+            track={track}
             score={score}
             onLeaderboard={handleLeaderboard}
             onReset={handleReset}

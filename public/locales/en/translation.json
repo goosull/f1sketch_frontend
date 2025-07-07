@@ -11,7 +11,9 @@
   },
   "scoreboard": {
     "title": "Your Score",
-    "accuracy": "Accuracy",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sharetext": "My {{track}} score is {{score}}% on F1 Sketch! Can you beat it? https://f1sketch.vercel.app/{{trackId}}",
     "nickname": "Enter your nickname",
     "submit": "Submit to Leaderboard",
     "main": "Main Menu",
