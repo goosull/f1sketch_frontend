@@ -1,0 +1,35 @@
+{
+  "root": {
+    "title": "Select an F1 Track",
+    "description": "Choose a track to view and draw its layout.",
+    "label": "Track Selection",
+    "placeholder": "Select a track...",
+    "button": "It's Lights Out and Away We Go!",
+    "feedback": "Do you have any feedback or suggestions?",
+    "feedbackLink": "We'd love to hear from you!"
+  },
+  "scoreboard": {
+    "title": "Your Score",
+    "accuracy": "Accuracy",
+    "nickname": "Enter your nickname",
+    "submit": "Submit to Leaderboard",
+    "main": "Main Menu",
+    "retry": "Draw Again"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "user": "User",
+    "accuracy": "Accuracy",
+    "placeholder": "Select a track..."
+  },
+  "help": {
+    "title": "Getting Started",
+    "description": [
+      "Select an F1 track and draw its layout.",
+      "When you select a track, its layout briefly appears on the screen.",
+      "Draw the layout to measure your accuracy.",
+      "Submit your score to the leaderboard!"
+    ]
+  }
+}
