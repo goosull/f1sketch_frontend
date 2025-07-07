@@ -15,18 +15,16 @@ import {
   Portal,
   Spinner,
   Center,
+  Dialog,
+  CloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
-
-type LeaderboardEntry = {
-  rank: number;
-  name: string;
-  accuracy: number;
-};
+import { LeaderboardEntry } from "@/shared";
+import { LeaderboardDetail } from "./LeaderboardDetail";
 
 type TrackOption = {
   label: string;
@@ -91,6 +89,7 @@ export function Leaderboard() {
           id: number;
           username: string | null;
           score: number;
+          submission_id: string;
         }[]
       >(`/api/leaderboard/track/${selectedTrack.value}`)
       .then((res) => {
@@ -99,6 +98,7 @@ export function Leaderboard() {
           rank: idx + 1,
           name: item.username ?? "Anonymous",
           accuracy: item.score,
+          submission_id: item.submission_id,
         }));
         setEntries(mapped);
       })
@@ -199,44 +199,69 @@ export function Leaderboard() {
             {!!isLeaderboardLoaded && (
               <>
                 <Box flex="1" minH="0" overflowY="auto">
-                  {visibleItems.map(({ rank, name, accuracy }, i) => (
-                    <Flex
-                      key={rank}
-                      py={4}
-                      px={6}
-                      borderTop={i === 0 ? undefined : "1px solid"}
-                      borderColor="border"
-                      align="center"
-                      cursor="pointer"
-                      _hover={{ bg: "navbarHover" }}
-                    >
-                      <Box w="80px">
-                        <Badge
-                          borderRadius="full"
-                          px={3}
-                          py={1}
-                          bg={rank === 1 ? "themeRed" : "transparent"}
-                          color={rank === 1 ? "white" : "text"}
-                          borderWidth={rank === 1 ? 0 : 2}
-                          variant={rank === 1 ? "solid" : "outline"}
-                          textAlign="center"
-                        >
-                          {rank}
-                        </Badge>
-                      </Box>
-                      <Box flex="1">
-                        <Text>{name}</Text>
-                      </Box>
-                      <Box w="120px" textAlign="right">
-                        <Text
-                          color={getAccuracyColor(rank - 1, entries.length)}
-                          fontWeight="bold"
-                        >
-                          {accuracy}%
-                        </Text>
-                      </Box>
-                    </Flex>
-                  ))}
+                  {visibleItems.map(
+                    ({ rank, name, accuracy, submission_id }, i) => (
+                      <Dialog.Root
+                        key={submission_id}
+                        placement="center"
+                        motionPreset="slide-in-bottom"
+                        size="xl"
+                      >
+                        <Dialog.Trigger asChild>
+                          <Flex
+                            key={rank}
+                            py={4}
+                            px={6}
+                            borderTop={i === 0 ? undefined : "1px solid"}
+                            borderColor="border"
+                            align="center"
+                            cursor="pointer"
+                            _hover={{ bg: "navbarHover" }}
+                          >
+                            <Box w="80px">
+                              <Badge
+                                borderRadius="full"
+                                px={3}
+                                py={1}
+                                bg={rank === 1 ? "themeRed" : "transparent"}
+                                color={rank === 1 ? "white" : "text"}
+                                borderWidth={rank === 1 ? 0 : 2}
+                                variant={rank === 1 ? "solid" : "outline"}
+                                textAlign="center"
+                              >
+                                {rank}
+                              </Badge>
+                            </Box>
+                            <Box flex="1">
+                              <Text>{name}</Text>
+                            </Box>
+                            <Box w="120px" textAlign="right">
+                              <Text
+                                color={getAccuracyColor(
+                                  rank - 1,
+                                  entries.length
+                                )}
+                                fontWeight="bold"
+                              >
+                                {accuracy}%
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Dialog.Trigger>
+                        <Portal>
+                          <Dialog.Backdrop />
+                          <Dialog.Positioner>
+                            <Dialog.Content>
+                              <LeaderboardDetail id={submission_id} />
+                              <Dialog.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                              </Dialog.CloseTrigger>
+                            </Dialog.Content>
+                          </Dialog.Positioner>
+                        </Portal>
+                      </Dialog.Root>
+                    )
+                  )}
                 </Box>
                 <Pagination.Root
                   count={entries.length}

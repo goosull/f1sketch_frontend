@@ -14,3 +14,22 @@ export interface Track {
   region_en: string;
   image_url: string;
 }
+
+export interface Submission {
+  id: string;
+  track_id: string;
+  username?: string;
+  user_path: Point[];
+  official_path: Point[];
+  score: number;
+  hausdorff: number;
+  normalized_user_path: Point[];
+  created_at: string;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  name: string;
+  accuracy: number;
+  submission_id: string;
+}
