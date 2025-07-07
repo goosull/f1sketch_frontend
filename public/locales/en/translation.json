@@ -27,11 +27,6 @@
   },
   "help": {
     "title": "Getting Started",
-    "description": [
-      "Select an F1 track and draw its layout.",
-      "When you select a track, its layout briefly appears on the screen.",
-      "Draw the layout to measure your accuracy.",
-      "Submit your score to the leaderboard!"
-    ]
+    "description": "Select an F1 track and draw its layout.\nWhen you select a track, its layout briefly appears on the screen.\nDraw the layout to measure your accuracy.\nSubmit your score to the leaderboard!"
   }
 }

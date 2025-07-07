@@ -13,9 +13,11 @@ import { ColorModeButton } from "./ui/color-mode";
 import { usePathname } from "next/navigation";
 import { BsQuestionCircle } from "react-icons/bs";
 import { LanguageSwitch } from "./LanguageSwitch";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
   const path = usePathname();
+  const t = useTranslation().t;
 
   const links = [
     { label: "Home", href: "/" },
@@ -60,6 +62,7 @@ export default function Navbar() {
                 _hover={{ color: "red.500" }}
                 key={link.href}
                 href={link.href}
+                transition="color 0.1s"
               >
                 {link.label}
               </Link>
@@ -69,23 +72,40 @@ export default function Navbar() {
               color="text"
               bg="box"
               borderRadius="full"
-              _hover={{ color: "red.500" }}
+              _hover={{ color: "themeRed" }}
             />
 
             <LanguageSwitch />
 
             <Popover.Root>
-              <Popover.Trigger color="text" _hover={{ color: "red.500" }}>
+              <Popover.Trigger
+                color="text"
+                _hover={{ color: "themeRed" }}
+                transition="color 0.1s"
+                cursor="pointer"
+              >
                 <BsQuestionCircle size={24} />
               </Popover.Trigger>
               <Popover.Positioner>
-                <Popover.Content>
+                <Popover.Content bg="navbarBg" color="text" borderRadius="md">
                   <Popover.CloseTrigger />
                   <Popover.Arrow>
                     <Popover.ArrowTip />
                   </Popover.Arrow>
-                  <Popover.Body>
-                    <Popover.Title />
+                  <Popover.Body display="flex" flexDirection="column" gap={2}>
+                    <Popover.Title fontSize="md" color="themeRed">
+                      {t("help.title")}
+                    </Popover.Title>
+                    {t("help.description")
+                      .split("\n")
+                      .map((line, index) => (
+                        <Box key={index} mt={2} display="flex" gap={2}>
+                          <Box color="themeRed" fontWeight="bold">
+                            {index + 1}.
+                          </Box>
+                          <Text>{line}</Text>
+                        </Box>
+                      ))}
                   </Popover.Body>
                 </Popover.Content>
               </Popover.Positioner>

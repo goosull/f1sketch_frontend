@@ -1,29 +1,20 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import HttpApi from "i18next-http-backend";
-import LanguageDetector from "i18next-browser-languagedetector";
+import commonEn from "../../public/locales/en/translation.json";
+import commonKo from "../../public/locales/ko/translation.json";
 
-i18n
-  .use(HttpApi) // JSON 파일 로딩
-  .use(LanguageDetector) // 브라우저 언어 감지
-  .use(initReactI18next) // React 바인딩
-  .init({
-    supportedLngs: ["en", "ko"],
-    fallbackLng: "en",
-    debug: process.env.NODE_ENV === "development",
-
-    // 번역 파일 경로 (public 폴더 기준)
-    backend: {
-      loadPath: "/locales/{{lng}}/{{ns}}.json",
-    },
-
-    interpolation: {
-      escapeValue: false, // React가 이미 XSS 방어
-    },
-
-    react: {
-      useSuspense: false, // Suspense 미사용 시
-    },
-  });
+i18n.use(initReactI18next).init({
+  resources: {
+    en: { common: commonEn },
+    ko: { common: commonKo },
+  },
+  lng: "en", // 초기 언어
+  fallbackLng: "en",
+  supportedLngs: ["en", "ko"],
+  defaultNS: "common", // 네임스페이스 지정
+  ns: ["common"],
+  interpolation: { escapeValue: false },
+  react: { useSuspense: false }, // (SSR/Static 환경에서 쓸 땐 false)
+});
 
 export default i18n;

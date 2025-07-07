@@ -25,7 +25,7 @@ export function LanguageSwitch() {
 
   return (
     <Menu.Root navigate={({ value }) => handleChange(value)}>
-      <Menu.Trigger asChild>
+      <Menu.Trigger asChild _hover={{ borderColor: "themeRed" }}>
         <Button size="sm" bg="navbarBg" variant="outline" color="text">
           {current.label}
           <FaChevronDown />
@@ -46,6 +46,7 @@ export function LanguageSwitch() {
                   cursor="pointer"
                   color={current.code === lang.code ? "red" : "text"}
                   _hover={{ bg: "navbarHover" }}
+                  transition="background-color 0.1s"
                 >
                   {lang.label}
                   <Menu.ItemIndicator />
