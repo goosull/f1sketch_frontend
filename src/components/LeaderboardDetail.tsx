@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Box, Text, Spinner, Center } from "@chakra-ui/react";
 import { useColorMode } from "./ui/color-mode";
 import axios from "axios";
-import { Submission, Point } from "@/shared";
+import { Submission, Point, Track } from "@/shared";
 import { useTranslation } from "react-i18next";
 
 interface LeaderboardDetailProps {
@@ -11,22 +11,35 @@ interface LeaderboardDetailProps {
 
 export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
   const [submission, setSubmission] = React.useState<Submission | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const t = useTranslation().t;
+  const [track, setTrack] = React.useState<Track | null>(null);
+  const [submissionLoaded, setSubmissionLoaded] = React.useState(false);
+  const [trackLoaded, setTrackLoaded] = React.useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    setLoading(true);
+    setSubmissionLoaded(false);
     axios
       .get<Submission>(`/api/submission/${id}`)
       .then((res) => setSubmission(res.data))
       .catch(console.error)
-      .finally(() => setLoading(false));
+      .finally(() => setSubmissionLoaded(true));
   }, [id]);
+
+  useEffect(() => {
+    if (submission) {
+      setTrackLoaded(false);
+      axios
+        .get<Track>(`/api/track/${submission.track_id}`)
+        .then((res) => setTrack(res.data))
+        .catch(console.error)
+        .finally(() => setTrackLoaded(true));
+    }
+  }, [submission]);
 
   return (
     <Box p={2} bg="bg" borderRadius="xl" boxShadow="md">
       <Box bg="box" p={6} borderRadius="xl" boxShadow="lg" overflow="hidden">
-        {loading || !submission ? (
+        {!submissionLoaded || !trackLoaded || !submission ? (
           <Box inset="0">
             <Center height={600}>
               <Spinner size="xl" color="themeRed" />
@@ -37,6 +50,7 @@ export function LeaderboardDetail({ id }: LeaderboardDetailProps) {
             <Text fontSize="xl" fontWeight="bold" mb={4} color="text">
               {submission?.username}
               {t("leaderboard.detail")}
+              {i18n.language === "ko" ? track?.name_ko : track?.name_en}
             </Text>
             <Box
               display="flex"
