@@ -8,6 +8,10 @@ const inter = Inter({
   display: "swap",
 });
 
+export const metadata = {
+  title: "F1 Sketch",
+};
+
 export default function RootLayout({
   children,
 }: {
